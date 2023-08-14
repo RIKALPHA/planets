@@ -3,25 +3,31 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use App\Controller\AddPlanetActionController;
 use App\Controller\GetPlanetsActionController;
 use App\Repository\PlanetRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PlanetRepository::class)]
 #[ApiResource(
     operations: [
-        new Get(
+        new GetCollection(
             uriTemplate: '/list',
             controller: GetPlanetsActionController::class,
+            paginationEnabled: false
         ),
         new Post(
             uriTemplate: '/add',
-            status: 301
+            controller: AddPlanetActionController::class
         )
     ],
-    routePrefix: '/planets')]
+    routePrefix: '/planets',
+    normalizationContext: null,
+    denormalizationContext: null
+)]
 class Planet
 {
     #[ORM\Id]
@@ -30,19 +36,23 @@ class Planet
     private ?int $id = null;
 
     #[ORM\Column(length: 100, nullable: true)]
+    #[Groups(['show'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['show'])]
     private ?string $image = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['show'])]
     private ?string $description = null;
 
-    #[ORM\Column]
-    private ?int $status = null;
+    #[ORM\Column(options: ["default" => 0])]
+    #[Groups(['show'])]
+    private ?int $status = 0;
 
-    #[ORM\Column]
-    private ?int $robotsExploring = null;
+    #[ORM\Column(options: ["default" => 0])]
+    private ?int $robotsExploring = 0;
 
     public function getId(): ?int
     {
