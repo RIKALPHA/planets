@@ -2,24 +2,26 @@
 
 namespace App\Entity;
 
-use App\Repository\PlanetRepository;
-use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
-use App\Controller\GetPlanetsAction;
+use App\Controller\GetPlanetsActionController;
+use App\Repository\PlanetRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PlanetRepository::class)]
-#[ApiResource(operations: [
-    new Get(
-        uriTemplate: '/planets',
-		controller: GetPlanetsAction::class, 
-    ),
-    new Post(
-        uriTemplate: '/grimoire', 
-        status: 301
-    )
-])]
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/list',
+            controller: GetPlanetsActionController::class,
+        ),
+        new Post(
+            uriTemplate: '/add',
+            status: 301
+        )
+    ],
+    routePrefix: '/planets')]
 class Planet
 {
     #[ORM\Id]
