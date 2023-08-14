@@ -30,6 +30,18 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 class Planet
 {
+    public const STATUS_TODO = "TODO";
+    public const STATUS_OK = "OK";
+    public const STATUS_NOK = "NOK";
+    public const STATUS_ENR = "En route";
+
+    public const CORRELATION = [
+        0 => self::STATUS_TODO,
+        1 => self::STATUS_ENR,
+        2 => self::STATUS_OK,
+        3 => self::STATUS_NOK,
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

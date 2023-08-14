@@ -36,6 +36,7 @@ RUN set -eux; \
 		intl \
 		opcache \
 		zip \
+    	amqp \
     ;
 
 ###> recipes ###
@@ -81,6 +82,7 @@ RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 RUN set -eux; \
 	install-php-extensions \
     	xdebug \
+    	amqp \
     ;
 
 COPY --link docker/php/conf.d/app.dev.ini $PHP_INI_DIR/conf.d/
