@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Controller\AddPlanetActionController;
 use App\Controller\GetPlanetsActionController;
+use App\Dto\PlanetOutputDto;
 use App\Repository\PlanetRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -17,7 +18,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new GetCollection(
             uriTemplate: '/list',
             controller: GetPlanetsActionController::class,
-            paginationEnabled: false
+            paginationEnabled: false,
+            output: PlanetOutputDto::class
         ),
         new Post(
             uriTemplate: '/add',
@@ -45,26 +47,26 @@ class Planet
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    public ?int $id = null;
 
     #[ORM\Column(length: 100, nullable: true)]
     #[Groups(['show'])]
-    private ?string $name = null;
+    public ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['show'])]
-    private ?string $image = null;
+    public ?string $image = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['show'])]
-    private ?string $description = null;
+    public ?string $description = null;
 
     #[ORM\Column(options: ["default" => 0])]
     #[Groups(['show'])]
-    private ?int $status = 0;
+    public ?int $status = 0;
 
     #[ORM\Column(options: ["default" => 0])]
-    private ?int $robotsExploring = 0;
+    public ?int $robotsExploring = 0;
 
     public function getId(): ?int
     {

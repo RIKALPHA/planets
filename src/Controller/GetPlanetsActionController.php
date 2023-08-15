@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
+use App\Dto\PlanetOutputDto;
 use App\Repository\PlanetRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Context\Normalizer\ObjectNormalizerContextBuilder;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class GetPlanetsActionController extends AbstractController
@@ -23,9 +23,11 @@ class GetPlanetsActionController extends AbstractController
     {
         $planets = $this->planetRepository->findAll();
 
-        return new Response($this->serializer->serialize($planets, 'json'),200);
-//        return $this->render('get_planets_action/index.html.twig', [
-//            'controller_name' => 'GetPlanetsActionController',
-//        ]);
+        $responsePlanets = [];
+        foreach($planets as $planet) {
+            $responsePlanets[] = PlanetOutputDto::hydrateFromObject($planet);
+        }
+
+        return new Response($this->serializer->serialize($responsePlanets, 'json'),200);
     }
 }
