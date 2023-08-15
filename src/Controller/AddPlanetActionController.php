@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Dto\PlanetOutputDto;
 use App\Entity\Planet;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,6 +38,6 @@ class AddPlanetActionController extends AbstractController
         $this->entityManager->persist($planet);
         $this->entityManager->flush();
 
-        return new Response($this->serializer->serialize($planet, 'json'),200);
+        return new Response($this->serializer->serialize(PlanetOutputDto::hydrate((array)$planet), 'json'),200);
     }
 }

@@ -11,23 +11,9 @@ trait HydrateStaticTrait
         $dto = new self();
         foreach ($values as $key => $value) {
             if (property_exists($dto, $key)) {
-                if ($key === 'status') {
-                    $dto->status = Planet::CORRELATION[$value];
-                } else {
-                    $dto->$key = $value;
-                }
-            }
-        }
-
-        return $dto;
-    }
-
-    public static function hydrateFromObject(object $object): self
-    {
-        $dto = new self();
-        foreach ($object as $key => $value) {
-            if (property_exists($object, $key)) {
-                if ($key === 'status') {
+                if (in_array($key,['name', 'description'])) {
+                    $dto->$key = $value ?? '';
+                } else if ($key === 'status') {
                     $dto->status = Planet::CORRELATION[$value];
                 } else {
                     $dto->$key = $value;

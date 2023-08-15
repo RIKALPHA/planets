@@ -25,7 +25,7 @@ class GetPlanetsActionController extends AbstractController
 
         $responsePlanets = [];
         foreach($planets as $planet) {
-            $responsePlanets[] = PlanetOutputDto::hydrateFromObject($planet);
+            $responsePlanets[] = PlanetOutputDto::hydrate((array)$planet);
         }
 
         return new Response($this->serializer->serialize($responsePlanets, 'json'),200);
