@@ -11,7 +11,7 @@ framework:
             external_messages:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
                 options:
-                    auto_setup: false
+                    auto_setup: true
                     exchange:
                         name: messages
                         type: direct
