@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+//php bin/console messenger:consume -vv external_messages
 #[AsMessageHandler]
 class RobotHandler
 {
