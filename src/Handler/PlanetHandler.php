@@ -2,7 +2,7 @@
 
 namespace App\Handler;
 
-use App\Message\RobotTransmission;
+use App\Message\PlanetUpdate;
 use App\Repository\PlanetRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -10,7 +10,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 //php bin/console messenger:consume -vv external_messages
 #[AsMessageHandler]
-class RobotHandler
+class PlanetHandler
 {
     private PlanetRepository $planetRepository;
     private EntityManagerInterface $entityManager;
@@ -24,18 +24,20 @@ class RobotHandler
     /**
      * @throws Exception
      */
-    public function __invoke(RobotTransmission $robot): void
+    public function __invoke(PlanetUpdate $planetUpdate): void
     {
-        $robotArrivedOnPlanetId = $robot->getPlanetId();
+        $planetId = $planetUpdate->getId();
 
-        $planet = $this->planetRepository->find($robotArrivedOnPlanetId);
+        $planet = $this->planetRepository->find($planetId);
         if ($planet === null) {
             throw new Exception('Planet Not found.');
         }
-        if($planet->getStatus() === 0) {
-            $planet->setStatus(1);
+        if ($planet->getStatus() !== 1) {
+            throw new Exception('Planet cannot be updated.');
         }
-        $planet->robotsExploring++;
+
+        $planet->setDescription($planetUpdate->getDescription());
+        $planet->setStatus($planetUpdate->getStatus());
 
         $this->entityManager->persist($planet);
         $this->entityManager->flush();
