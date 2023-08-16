@@ -32,8 +32,9 @@ class RobotHandler
         if ($planet === null) {
             throw new Exception('Planet Not found.');
         }
-
-        $planet->setStatus(random_int(1,3));
+        if($planet->getStatus() === 0) {
+            $planet->setStatus(1);
+        }
 
         $this->entityManager->persist($planet);
         $this->entityManager->flush();
